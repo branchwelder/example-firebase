@@ -1,0 +1,19 @@
+{
+  "name": "example-fetch",
+  "scripts": {
+    "dev": "vite",
+    "host": "vite --host",
+    "build": "vite build --base=/example-fetch/",
+    "preview": "vite preview",
+    "deploy": "npm run build && gh-pages -d dist"
+  },
+  "dependencies": {
+    "firebase": "^9.17.1",
+    "firebaseui": "^6.0.2",
+    "lit-html": "^2.6.1"
+  },
+  "devDependencies": {
+    "gh-pages": "^5.0.0",
+    "vite": "^4.1.4"
+  }
+}
