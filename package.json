@@ -3,9 +3,9 @@
   "scripts": {
     "dev": "vite",
     "host": "vite --host",
-    "build": "vite build --base=/example-fetch/",
+    "build": "vite build",
     "preview": "vite preview",
-    "deploy": "npm run build && gh-pages -d dist"
+    "deploy": "vite build --base=/example-firebase/ && gh-pages -d dist"
   },
   "dependencies": {
     "firebase": "^9.17.1",
