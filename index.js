@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import {
   getAuth,
   signInWithRedirect,
+  signInAnonymously,
   onAuthStateChanged,
   GoogleAuthProvider,
   signOut,
@@ -45,6 +46,16 @@ function signInUser() {
   signInWithRedirect(auth, provider);
 }
 
+function signInAnon() {
+  signInAnonymously(auth)
+    .then(() => {
+      // Signed in..
+    })
+    .catch((error) => {
+      console.error(`Error ${error.code}: ${error.message}.`);
+    });
+}
+
 // This function is called if the Sign Out button is clicked
 function signOutUser() {
   signOut(auth)
@@ -59,8 +70,9 @@ function signOutUser() {
 // This function returns a template with the sign in view - what the user sees when they're signed out
 function signInView() {
   return html`<button class="sign-in" @click=${signInUser}>
-    Sign in with Google
-  </button>`;
+      Sign in with Google
+    </button>
+    <button class="sign-in" @click=${signInAnon}>Anonymous Sign in</button>`;
 }
 
 // This function returns a template with normal app view - what the user sees when they're signed in
@@ -69,7 +81,10 @@ function view() {
   return html`
     <div id="top-bar">
       <span>chit chat</span>
-      <span>Signed in as ${auth.currentUser.displayName}</span>
+      <span
+        >Signed in as
+        ${user.isAnonymous ? "anon" : auth.currentUser.displayName}</span
+      >
       <button @click=${signOutUser}>Sign Out</button>
     </div>
     <div id="messages-container">
@@ -112,7 +127,7 @@ async function sendMessage(message) {
   // Add some data to the users collection
   try {
     const docRef = await addDoc(collection(db, "messages"), {
-      displayName: user.displayName,
+      displayName: user.isAnonymous ? "anon" : user.displayName,
       uid: user.uid,
       time: Date.now(),
       content: message,
